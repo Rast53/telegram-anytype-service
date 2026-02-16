@@ -1,0 +1,54 @@
+{
+  "name": "telegram-anytype-service",
+  "version": "0.1.0",
+  "description": "Self-hosted Telegram service for Anytype via MCP",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "ops:check": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/check.ps1",
+    "ops:build-push": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/docker-build-push.ps1",
+    "ops:setup-nas-key": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-nas-deploy-key.ps1",
+    "ops:sync-deploy": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-deploy.ps1",
+    "ops:deploy": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/deploy-synology.ps1",
+    "ops:deploy-nas": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/deploy-nas.ps1",
+    "ops:smoke": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
+    "ops:pipeline": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/full-pipeline.ps1"
+  },
+  "dependencies": {
+    "@grammyjs/runner": "^2.0.3",
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@prisma/client": "^5.20.0",
+    "bullmq": "^5.10.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "grammy": "^1.27.0",
+    "ioredis": "^5.4.1",
+    "pino": "^9.4.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.10.2",
+    "@types/supertest": "^6.0.2",
+    "prisma": "^5.20.0",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

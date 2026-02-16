@@ -1,0 +1,10 @@
+---
+description: Архитектурные правила для Telegram Anytype Service
+alwaysApply: true
+---
+
+- Следовать слоистой архитектуре: `bot -> core -> adapters`.
+- Не вызывать MCP/HTTP напрямую из `bot` слоя.
+- Rule-first классификация должна быть выше LLM.
+- При неоднозначности всегда fallback в Inbox.
+- Любые новые интеграции добавлять через adapter-интерфейс.

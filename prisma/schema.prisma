@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OperationStatus {
+  queued
+  processing
+  completed
+  failed
+}
+
+enum IntentType {
+  create_day_plan
+  add_inbox_note
+  get_day_plan
+  get_inbox
+  unknown
+}
+
+model ProcessedUpdate {
+  updateId   BigInt   @id
+  createdAt  DateTime @default(now())
+}
+
+model Operation {
+  id               String          @id @default(uuid())
+  telegramUpdateId BigInt?
+  chatId           BigInt
+  userId           BigInt
+  intent           IntentType
+  requestText      String
+  normalizedPayload Json?
+  status           OperationStatus @default(queued)
+  responseText     String?
+  errorText        String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  completedAt      DateTime?
+
+  @@index([status, createdAt])
+  @@index([chatId, createdAt])
+}

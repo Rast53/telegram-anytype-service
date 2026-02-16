@@ -1,0 +1,17 @@
+---
+description: Правила деплоя и эксплуатации Telegram Anytype Service
+alwaysApply: true
+---
+
+- Деплой только через Docker image + ENV.
+- Перед релизом прогонять `lint`, `typecheck`, `test`.
+- Для проверок/сборки/деплоя использовать script-first:
+  - `scripts/check.ps1`
+  - `scripts/docker-build-push.ps1`
+  - `scripts/deploy-synology.ps1`
+  - `scripts/smoke.ps1`
+  - `scripts/full-pipeline.ps1`
+- По возможности не выполнять вручную разрозненные docker/ssh команды, если есть эквивалентный скрипт.
+- Не выкатывать без readiness endpoint.
+- Фиксировать changelog и обновлять `docs/OPERATIONS.md` при изменениях рантайма.
+- Версионировать образ тегами semver или commit sha.

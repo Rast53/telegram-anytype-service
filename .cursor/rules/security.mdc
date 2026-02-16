@@ -1,0 +1,10 @@
+---
+description: Правила безопасности для Telegram Anytype Service
+alwaysApply: true
+---
+
+- Не хранить секреты в коде, только через ENV.
+- Не логировать полные тексты приватных сообщений в error-логах.
+- Не отключать idempotency обработку `update_id`.
+- Не расширять доступ без allowlist проверки по `user_id`.
+- Любые изменения auth/access описывать в `SECURITY.md`.
