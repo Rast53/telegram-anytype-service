@@ -31,6 +31,12 @@
   - `check.ps1` -> `docker-build-push.ps1` -> `deploy-synology.ps1` -> `smoke.ps1`
   - или единый `full-pipeline.ps1`
 
+## GitHub: Issues + Projects + PR
+
+- Задачи вести через **GitHub Issues** (шаблоны: `.github/ISSUE_TEMPLATE/`).
+- Ветки от `master`: `issue-N-short-name`; в коммитах и в описании PR указывать `fixes #N` или `closes #N` для автозакрытия issue при мерже.
+- Полное описание workflow: `docs/GITHUB_WORKFLOW.md`.
+
 ## Документация
 
 При изменениях обновлять:

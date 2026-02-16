@@ -92,9 +92,14 @@ Self-hosted сервис, который принимает сообщения �
 
 Подробно: [SECURITY.md](SECURITY.md)
 
+## Разработка
+
+Задачи ведутся через **GitHub Issues**, ветки — `issue-N-name`, в коммитах и PR — `fixes #N` для автозакрытия. Подробно: [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md).
+
 ## Документация
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
 - [docs/TELEGRAM_INTENTS.md](docs/TELEGRAM_INTENTS.md)
 - [docs/MCP_CONFIGURATION.md](docs/MCP_CONFIGURATION.md)
 - [docs/NAS_ANYTYPE_BOOTSTRAP.md](docs/NAS_ANYTYPE_BOOTSTRAP.md)
