@@ -50,6 +50,7 @@ const envSchema = z.object({
 
   ANYTYPE_SPACE_ID: z.string().min(1, "ANYTYPE_SPACE_ID обязателен"),
   ANYTYPE_CATALOG_OBJECT_ID: z.string().optional(),
+  ANYTYPE_INBOX_COLLECTION_ID: z.string().optional(),
   ANYTYPE_INBOX_PAGE_TITLE: z.string().default("01 Inbox"),
   ANYTYPE_DAY_PLAN_TITLE_PREFIX: z.string().default("План"),
   ANYTYPE_INBOX_NOTE_TITLE_PREFIX: z.string().default("Inbox"),

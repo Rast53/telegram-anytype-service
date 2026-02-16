@@ -65,7 +65,10 @@ export class McpClient {
     try {
       availableNames = await this.getAvailableToolNames();
     } catch (error) {
-      logger.warn({ error }, "Не удалось заранее получить список MCP tools. Пробую fallback по именам.");
+      logger.warn(
+        { error },
+        "Не удалось заранее получить список MCP tools. Пробую fallback по именам.",
+      );
     }
 
     const candidates = buildToolNameCandidates(toolName).sort(
@@ -150,10 +153,7 @@ export class McpClient {
   }
 }
 
-const parseToolResponse = <T>(
-  rawResult: unknown,
-  requestedToolName: string,
-): T => {
+const parseToolResponse = <T>(rawResult: unknown, requestedToolName: string): T => {
   const typedResult = rawResult as {
     structuredContent?: unknown;
     content?: Array<{ type: string; text?: string }>;

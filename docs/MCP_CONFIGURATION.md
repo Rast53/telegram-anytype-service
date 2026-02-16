@@ -35,11 +35,13 @@ MCP_STDIO_ENV_JSON={"ANYTYPE_API_BASE_URL":"http://<host>:31012","OPENAPI_MCP_HE
   - `get-object`
   - `create-object`
   - `update-object`
+  - `add-list-objects`, `get-list-objects`, `get-list-views` (для Inbox как коллекции 2Brain)
 - API-prefixed имена:
   - `API-search-space`
   - `API-get-object`
   - `API-create-object`
   - `API-update-object`
+  - `API-add-list-objects`, `API-get-list-objects`, `API-get-list-views`
 
 Сервис поддерживает оба варианта (legacy и `API-*`).
 
@@ -52,6 +54,14 @@ ANYTYPE_INBOX_PAGE_TITLE=01 Inbox
 ANYTYPE_DAY_PLAN_TITLE_PREFIX=План
 ANYTYPE_INBOX_NOTE_TITLE_PREFIX=Inbox
 ```
+
+Для **2Brain / Inbox как коллекции** (рекомендуется при использовании Каталога контекста):
+
+```env
+ANYTYPE_INBOX_COLLECTION_ID=<list_id коллекции Inbox DB>
+```
+
+Значение берётся из Каталога контекста в Anytype (блок «Inbox: как кидать и разбирать», list_id Inbox DB). Если задано: запись в Inbox дополнительно добавляет страницу в коллекцию; запрос «что в inbox» сначала получает представление коллекции (get-list-views), затем объекты (get-list-objects с view_id). Без view_id Anytype API возвращает 500 (views/undefined).
 
 ## Проверка подключения
 

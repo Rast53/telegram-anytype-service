@@ -45,6 +45,7 @@ operationStore --> telegramBot
   - понятные запросы обрабатываются без LLM;
   - LLM используется только для классификации неочевидных формулировок;
   - многошаговый tool-calling агент (как в Cursor) пока не включен и вынесен в roadmap.
+- **Inbox:** при конфигурации 2Brain (Каталог контекста) Inbox реализуется через коллекцию Inbox DB: запись = create-object + add-list-objects; чтение = get-list-objects (см. [ROADMAP.md](ROADMAP.md), [MCP_CONFIGURATION.md](MCP_CONFIGURATION.md)).
 
 ## Security decisions
 

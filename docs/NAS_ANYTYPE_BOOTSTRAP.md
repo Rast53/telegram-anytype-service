@@ -65,6 +65,7 @@ anytype space list
   - `OPENAPI_MCP_HEADERS.Authorization=Bearer <API_KEY>`
   - `OPENAPI_MCP_HEADERS.Anytype-Version`
 - `ANYTYPE_SPACE_ID=<id пространства из anytype space list>`
+- при использовании 2Brain: `ANYTYPE_CATALOG_OBJECT_ID` (id страницы Каталог контекста), `ANYTYPE_INBOX_COLLECTION_ID` (list_id коллекции Inbox DB из каталога)
 
 ### 7) Деплой сервиса
 

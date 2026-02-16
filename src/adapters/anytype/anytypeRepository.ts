@@ -10,6 +10,10 @@ interface AnytypeListResponse {
   }>;
 }
 
+interface AnytypeListViewsResponse {
+  data?: Array<{ id: string; name?: string }>;
+}
+
 interface AnytypeObjectResponse {
   object: {
     id: string;
@@ -76,6 +80,46 @@ export class AnytypeRepository {
       body: markdown,
     });
 
+    if (env.ANYTYPE_INBOX_COLLECTION_ID) {
+      logger.info(
+        { listId: env.ANYTYPE_INBOX_COLLECTION_ID, objectId: created.object.id },
+        "Добавляю страницу в коллекцию Inbox DB",
+      );
+      const listArgs = {
+        space_id: env.ANYTYPE_SPACE_ID,
+        list_id: env.ANYTYPE_INBOX_COLLECTION_ID,
+        objects: [created.object.id],
+      };
+      const toolNames = ["add-list-objects", "add_objects_to_list"];
+      let added = false;
+      for (const name of toolNames) {
+        try {
+          await this.mcpClient.callTool(name, listArgs);
+          added = true;
+          logger.info({ objectId: created.object.id }, "Страница добавлена в коллекцию Inbox DB");
+          break;
+        } catch (error) {
+          const errMsg = error instanceof Error ? error.message : String(error);
+          const isNotFound = /method\s+.+\s+not\s+found/i.test(errMsg);
+          if (isNotFound) {
+            logger.debug({ tool: name }, "MCP tool не найден, пробую следующий");
+            continue;
+          }
+          logger.warn(
+            { errMsg, objectId: created.object.id, listId: env.ANYTYPE_INBOX_COLLECTION_ID },
+            "Не удалось добавить запись в коллекцию Inbox DB. Страница создана.",
+          );
+          break;
+        }
+      }
+      if (!added && toolNames.length > 0) {
+        logger.warn(
+          { objectId: created.object.id },
+          "Ни один MCP tool для добавления в коллекцию не сработал (add-list-objects, add_objects_to_list).",
+        );
+      }
+    }
+
     return {
       objectId: created.object.id,
       title,
@@ -84,6 +128,37 @@ export class AnytypeRepository {
 
   public async listInbox(limit = 10): Promise<InboxItem[]> {
     await this.ensureCatalogLoaded();
+
+    if (env.ANYTYPE_INBOX_COLLECTION_ID) {
+      try {
+        const viewId = await this.getFirstListViewId(
+          env.ANYTYPE_SPACE_ID,
+          env.ANYTYPE_INBOX_COLLECTION_ID,
+        );
+        if (viewId) {
+          const listResponse = await this.mcpClient.callTool<AnytypeListResponse>(
+            "get-list-objects",
+            {
+              space_id: env.ANYTYPE_SPACE_ID,
+              list_id: env.ANYTYPE_INBOX_COLLECTION_ID,
+              view_id: viewId,
+              limit: Math.max(limit, env.ANYTYPE_SEARCH_LIMIT),
+            },
+          );
+          return (listResponse.data ?? []).slice(0, limit).map((item) => ({
+            id: item.id,
+            title: item.name,
+            snippet: item.snippet ?? "",
+          }));
+        }
+      } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        logger.warn(
+          { errMsg, listId: env.ANYTYPE_INBOX_COLLECTION_ID },
+          "get-list-objects по коллекции Inbox DB не удался, fallback на поиск по префиксу",
+        );
+      }
+    }
 
     const response = await this.mcpClient.callTool<AnytypeListResponse>("search-space", {
       space_id: env.ANYTYPE_SPACE_ID,
@@ -100,6 +175,34 @@ export class AnytypeRepository {
         title: item.name,
         snippet: item.snippet ?? "",
       }));
+  }
+
+  /**
+   * Получает id первого представления (view) коллекции для вызова get-list-objects.
+   * Anytype API требует view_id в пути; без него возвращается 500 (views/undefined).
+   */
+  private async getFirstListViewId(spaceId: string, listId: string): Promise<string | null> {
+    const toolNames = ["get-list-views", "get_list_views"];
+    for (const name of toolNames) {
+      try {
+        const response = await this.mcpClient.callTool<AnytypeListViewsResponse>(name, {
+          space_id: spaceId,
+          list_id: listId,
+          limit: 5,
+        });
+        const views = response.data ?? [];
+        const first = views[0];
+        return first?.id ?? null;
+      } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        if (/method\s+.+\s+not\s+found/i.test(errMsg)) {
+          continue;
+        }
+        logger.warn({ errMsg, listId }, "get-list-views не удался");
+        return null;
+      }
+    }
+    return null;
   }
 
   public async upsertDayPlan(

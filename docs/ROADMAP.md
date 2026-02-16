@@ -10,8 +10,11 @@
 - OpenRouter classifier как fallback при неочевидных запросах
 - базовая production-надежность и документация
 
+**Контекст Inbox (2Brain):** в Anytype Inbox — это коллекция (Inbox DB), а не папка. Запись в Inbox = создание страницы + добавление в коллекцию (`add-list-objects`). Чтение Inbox = список объектов коллекции (`get-list-objects`) или поиск по префиксу заголовка (fallback). Каталог контекста в Anytype задаёт `list_id` Inbox DB для маршрутизации.
+
 ## v1.1 (ближайшие улучшения)
 
+- **Inbox как коллекция 2Brain:** при заданном `ANYTYPE_INBOX_COLLECTION_ID` — после создания страницы вызывать `add-list-objects`; для «что в inbox» использовать `get-list-objects` по этой коллекции (единый список с GUI).
 - richer parsing планов (дедлайны, приоритеты, теги)
 - подтверждение перед risky update
 - admin-команда статуса очереди и последних ошибок
@@ -33,6 +36,10 @@
 - multi-tenant архитектура
 - pluggable storage providers (другие MCP хранилища)
 - event-sourcing и расширенная аналитика
+
+## Оценка MVP и аналоги
+
+См. [docs/MVP_ASSESSMENT.md](MVP_ASSESSMENT.md): можно ли было проще (REST API Anytype вместо MCP), плюсы/минусы, аналоги сервиса (Telegram → Notion/Obsidian/Anytype).
 
 ## Open-source readiness
 

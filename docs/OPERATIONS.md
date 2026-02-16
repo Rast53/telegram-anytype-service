@@ -40,9 +40,10 @@
 ### 2. Ошибки Anytype/MCP
 - проверить `MCP_TRANSPORT` и endpoint/command
 - проверить доступные MCP tools:
-  - legacy: `search-space`, `get-object`, `create-object`, `update-object`
-  - API-prefixed: `API-search-space`, `API-get-object`, `API-create-object`, `API-update-object`
+  - legacy: `search-space`, `get-object`, `create-object`, `update-object`, `add-list-objects`, `get-list-objects`
+  - API-prefixed: `API-search-space`, `API-get-object`, `API-create-object`, `API-update-object`, `API-add-list-objects`, `API-get-list-objects`
 - проверить `ANYTYPE_SPACE_ID`
+- при использовании Inbox как коллекции 2Brain: проверить `ANYTYPE_INBOX_COLLECTION_ID` (list_id из Каталога контекста)
 - для NAS headless Anytype API: свериться с [docs/NAS_ANYTYPE_BOOTSTRAP.md](docs/NAS_ANYTYPE_BOOTSTRAP.md)
 
 ### 3. Дубли задач

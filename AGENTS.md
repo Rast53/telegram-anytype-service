@@ -43,3 +43,5 @@
 - `README.md`
 - релевантные файлы в `docs/`
 - `deploy/.env.example` при изменении ENV
+
+Оценка MVP (MCP vs REST, аналоги): `docs/MVP_ASSESSMENT.md`.
